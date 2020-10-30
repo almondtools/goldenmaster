@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>net.amygdalum</groupId>
 	<artifactId>goldenmaster</artifactId>
-	<version>0.0.2</version>
+	<version>0.0.3-SNAPSHOT</version>
 	<name>${project.groupId}:${project.artifactId}</name>
 	<description>A JUnit5 extension for golden master testing</description>
 	<url>https://github.com/almondtools/goldenmaster</url>
@@ -28,7 +28,7 @@
 		<connection>scm:git:git@github.com:almondtools/goldenmaster.git</connection>
 		<developerConnection>scm:git:git@github.com:almondtools/goldenmaster.git</developerConnection>
 		<url>git@github.com:almondtools/goldenmaster.git</url>
-		<tag>goldenmaster-0.0.2</tag>
+		<tag>HEAD</tag>
 	</scm>
 	<distributionManagement>
 		<snapshotRepository>
