@@ -1,6 +1,7 @@
 package net.amygdalum.goldenmaster;
 
 import java.awt.GraphicsEnvironment;
+import java.util.Optional;
 
 import org.junit.jupiter.api.extension.BeforeEachCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.extension.ParameterContext;
 import org.junit.jupiter.api.extension.ParameterResolutionException;
 import org.junit.jupiter.api.extension.ParameterResolver;
 import org.junit.jupiter.api.extension.TestWatcher;
+import org.junit.platform.commons.support.AnnotationSupport;
 import org.opentest4j.AssertionFailedError;
 
 public class GoldenMasterExtension implements BeforeEachCallback, TestWatcher, ParameterResolver {
@@ -64,7 +66,16 @@ public class GoldenMasterExtension implements BeforeEachCallback, TestWatcher, P
 	}
 
 	private String basePath(ExtensionContext extensionContext) {
-		return extensionContext.getRequiredTestClass().getDeclaredAnnotation(GoldenMasterTest.class).store();
+		while (extensionContext != null) {
+			Optional<GoldenMasterTest> goldenMasterTest = extensionContext.getTestClass()
+				.flatMap(clazz -> AnnotationSupport.findAnnotation(clazz, GoldenMasterTest.class));
+			if (goldenMasterTest.isPresent()) {
+				return goldenMasterTest.get().store();
+			}
+			extensionContext = extensionContext.getParent().orElse(null);
+
+		}
+		throw new RuntimeException("cannot find annotation GoldenMasterTest");
 	}
 
 	private String groupOf(ExtensionContext extensionContext) {
