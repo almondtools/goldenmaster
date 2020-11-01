@@ -66,14 +66,15 @@ public class GoldenMasterExtension implements BeforeEachCallback, TestWatcher, P
 	}
 
 	private String basePath(ExtensionContext extensionContext) {
-		while (extensionContext != null) {
-			Optional<GoldenMasterTest> goldenMasterTest = extensionContext.getTestClass()
-				.flatMap(clazz -> AnnotationSupport.findAnnotation(clazz, GoldenMasterTest.class));
+		Optional<ExtensionContext> context = Optional.of(extensionContext);
+		while (context.isPresent()) {
+			Optional<GoldenMasterTest> goldenMasterTest = context
+				.flatMap(ExtensionContext::getElement)
+				.flatMap(annotatedElement -> AnnotationSupport.findAnnotation(annotatedElement, GoldenMasterTest.class));
 			if (goldenMasterTest.isPresent()) {
 				return goldenMasterTest.get().store();
 			}
-			extensionContext = extensionContext.getParent().orElse(null);
-
+			context = context.flatMap(ExtensionContext::getParent);
 		}
 		throw new RuntimeException("cannot find annotation GoldenMasterTest");
 	}

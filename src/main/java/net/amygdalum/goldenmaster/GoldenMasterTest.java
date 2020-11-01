@@ -9,7 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 
 @ExtendWith(GoldenMasterExtension.class)
-@Target({ElementType.TYPE})
+@Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface GoldenMasterTest {
 

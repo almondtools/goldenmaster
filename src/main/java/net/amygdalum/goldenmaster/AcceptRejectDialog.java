@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -18,6 +19,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 public class AcceptRejectDialog {
 
@@ -30,14 +33,14 @@ public class AcceptRejectDialog {
 	}
 
 	public CompletableFuture<List<Failure>> open() {
-		JFrame f = new JFrame();
+		JFrame f = new JFrame("Some expectations were not met");
 		Point start = leftUpperStart();
 
 		f.setLocation(start);
 		f.setAlwaysOnTop(true);
 		f.setLayout(new FlowLayout());
 		f.getContentPane()
-			.add(createListOfFailed());
+			.add(createContent());
 		f.getContentPane()
 			.add(createAcceptRejectButtons(event -> {
 				f.dispose();
@@ -58,8 +61,32 @@ public class AcceptRejectDialog {
 		return start;
 	}
 
+	private Component createContent() {
+		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(0,1));
+		panel.add(createDescription());
+		panel.add(createListOfFailed());
+		return panel;
+	}
+
+	private Component createDescription() {
+		JTextArea text = new JTextArea(""
+			+ "Following tests are started the first time"
+			+ " or do not meet the previously stored expectations."
+			+ "\n\n"
+			+ "* Reject and the current result will be serialized aside the current expectations as `<testname>.failed`."
+			+ "\n"
+			+ "* Accept to override the current expectations in `<testname>.failed`."
+			+ "\n\n"
+			+ "Some IDEs will let you preview the differences if you inspect the test results.");
+		text.setMargin(new Insets(10,10,10,10));
+		text.setEditable(false);
+		return text;
+	}
+
 	private Component createListOfFailed() {
 		JPanel panel = new JPanel();
+		panel.setBorder(new EmptyBorder(10,10,10,10));
 		panel.setLayout(new GridLayout(0,1));
 		Map<String, List<Failure>> groupedFailures = failures.getFailures().stream()
 			.collect(groupingBy(Failure::getGroup));
@@ -81,11 +108,13 @@ public class AcceptRejectDialog {
 
 	private JLabel test(String test) {
 		JLabel label = new JLabel(test);
+		label.setBorder(new EmptyBorder(0, 20, 0, 0));
 		return label;
 	}
 
 	private Component createAcceptRejectButtons(ActionListener onAccept, ActionListener onReject) {
 		JPanel panel = new JPanel();
+		panel.setLayout(new GridLayout(0,1));
 		panel.add(createButton("Accept", onAccept));
 		panel.add(createButton("Reject", onReject));
 		return panel;
@@ -94,6 +123,7 @@ public class AcceptRejectDialog {
 	private JButton createButton(String label, ActionListener listener) {
 		JButton button = new JButton(label);
 		button.addActionListener(listener);
+
 		return button;
 	}
 
