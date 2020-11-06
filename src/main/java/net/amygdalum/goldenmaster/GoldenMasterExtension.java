@@ -48,14 +48,14 @@ public class GoldenMasterExtension implements BeforeEachCallback, TestWatcher, P
 	private Failures fetchFailed(ExtensionContext extensionContext) {
 		Store store = extensionContext.getRoot().getStore(NAMESPACE);
 		String basePath = basePath(extensionContext);
-		return store.getOrComputeIfAbsent(basePath, g -> new Failures(basePath, isInteractive()), Failures.class);
+		return store.getOrComputeIfAbsent(basePath, g -> new Failures(basePath, interaction()), Failures.class);
 	}
 
-	private boolean isInteractive() {
+	private Interaction interaction() {
 		if (GraphicsEnvironment.isHeadless()) {
-			return false;
+			return null;
 		}
-		return true;
+		return new AcceptRejectDialog();
 	}
 
 	private TestLocation pathOf(ExtensionContext extensionContext) {

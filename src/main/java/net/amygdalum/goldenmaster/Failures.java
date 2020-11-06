@@ -15,17 +15,17 @@ import org.junit.jupiter.api.extension.ExtensionContext.Store.CloseableResource;
 
 public class Failures implements CloseableResource {
 	private String basePath;
-	private boolean interactive;
 	private List<Failure> failures;
+	private Interaction interaction;
 
-	public Failures(String basePath, boolean interactive) {
-		this.basePath = basePath;
-		this.interactive = interactive;
-		this.failures = new ArrayList<>();
+	public Failures(String basePath) {
+		this(basePath, null);
 	}
-
-	public List<Failure> getFailures() {
-		return failures;
+	
+	public Failures(String basePath, Interaction interaction) {
+		this.basePath = basePath;
+		this.interaction = interaction;
+		this.failures = new ArrayList<>();
 	}
 
 	public void add(Failure failure) {
@@ -34,10 +34,11 @@ public class Failures implements CloseableResource {
 
 	@Override
 	public void close() throws Throwable {
-		if (!interactive) {
+		if (interaction == null) {
 			failures.forEach(this::reject);
+			return;
 		}
-		new AcceptRejectDialog(this).open()
+		interaction.open(failures)
 			.thenAccept(accepted -> failures.forEach(failure -> {
 				if (accepted.contains(failure)) {
 					accept(failure);

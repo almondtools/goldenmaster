@@ -22,17 +22,16 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-public class AcceptRejectDialog {
+public class AcceptRejectDialog implements Interaction {
 
 	private CompletableFuture<List<Failure>> future;
-	private Failures failures;
 
-	public AcceptRejectDialog(Failures failures) {
+	public AcceptRejectDialog() {
 		this.future = new CompletableFuture<>();
-		this.failures = failures;
 	}
 
-	public CompletableFuture<List<Failure>> open() {
+	@Override
+	public CompletableFuture<List<Failure>> open(List<Failure> failures) {
 		JFrame f = new JFrame("Some expectations were not met");
 		Point start = leftUpperStart();
 
@@ -40,11 +39,11 @@ public class AcceptRejectDialog {
 		f.setAlwaysOnTop(true);
 		f.setLayout(new FlowLayout());
 		f.getContentPane()
-			.add(createContent());
+			.add(createContent(failures));
 		f.getContentPane()
 			.add(createAcceptRejectButtons(event -> {
 				f.dispose();
-				future.complete(failures.getFailures());
+				future.complete(failures);
 			}, event -> {
 				f.dispose();
 				future.complete(emptyList());
@@ -61,11 +60,11 @@ public class AcceptRejectDialog {
 		return start;
 	}
 
-	private Component createContent() {
+	private Component createContent(List<Failure> failures) {
 		JPanel panel = new JPanel();
 		panel.setLayout(new GridLayout(0,1));
 		panel.add(createDescription());
-		panel.add(createListOfFailed());
+		panel.add(createListOfFailed(failures));
 		return panel;
 	}
 
@@ -84,11 +83,11 @@ public class AcceptRejectDialog {
 		return text;
 	}
 
-	private Component createListOfFailed() {
+	private Component createListOfFailed(List<Failure> failures) {
 		JPanel panel = new JPanel();
 		panel.setBorder(new EmptyBorder(10,10,10,10));
 		panel.setLayout(new GridLayout(0,1));
-		Map<String, List<Failure>> groupedFailures = failures.getFailures().stream()
+		Map<String, List<Failure>> groupedFailures = failures.stream()
 			.collect(groupingBy(Failure::getGroup));
 		
 		for (Map.Entry<String, List<Failure>> entry : groupedFailures.entrySet()) {
