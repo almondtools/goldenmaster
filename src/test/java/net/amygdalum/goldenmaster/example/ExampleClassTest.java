@@ -6,16 +6,15 @@ import org.junit.jupiter.api.Test;
 import net.amygdalum.goldenmaster.Expectations;
 import net.amygdalum.goldenmaster.GoldenMasterTest;
 
-public class ExampleTest {
+@GoldenMasterTest(store="src/test/resources")
+public class ExampleClassTest {
 
-	@GoldenMasterTest(store="src/test/resources")
 	@Test
 	void testA(Expectations expectations) {
 		Example next = new Example("astring", true, 1, -1).next();
 		expectations.validate(next.getA() + ":" + next.isB() + ":" + next.getC() + ":" + next.getD());
 	}
 	
-	@GoldenMasterTest(store="src/test/resources")
 	@Nested
 	class testB {
 		@Test

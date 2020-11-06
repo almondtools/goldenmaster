@@ -2,6 +2,7 @@ package net.amygdalum.goldenmaster;
 
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.groupingBy;
+import static javax.swing.WindowConstants.DISPOSE_ON_CLOSE;
 
 import java.awt.Component;
 import java.awt.FlowLayout;
@@ -33,6 +34,7 @@ public class AcceptRejectDialog implements Interaction {
 	@Override
 	public CompletableFuture<List<Failure>> open(List<Failure> failures) {
 		JFrame f = new JFrame("Some expectations were not met");
+		f.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		Point start = leftUpperStart();
 
 		f.setLocation(start);
@@ -121,6 +123,7 @@ public class AcceptRejectDialog implements Interaction {
 
 	private JButton createButton(String label, ActionListener listener) {
 		JButton button = new JButton(label);
+		button.setName(label);
 		button.addActionListener(listener);
 
 		return button;

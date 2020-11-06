@@ -16,6 +16,19 @@ import org.opentest4j.AssertionFailedError;
 
 public class GoldenMasterExtension implements BeforeEachCallback, TestWatcher, ParameterResolver {
 	private static final Namespace NAMESPACE = Namespace.create(GoldenMasterExtension.class);
+	
+	private Interaction interaction;
+
+	public GoldenMasterExtension() {
+		this(GraphicsEnvironment.isHeadless()
+			? null
+			: new AcceptRejectDialog());
+
+	}
+
+	public GoldenMasterExtension(Interaction interaction) {
+		this.interaction = interaction;
+	}
 
 	@Override
 	public void beforeEach(ExtensionContext context) throws Exception {
@@ -48,15 +61,9 @@ public class GoldenMasterExtension implements BeforeEachCallback, TestWatcher, P
 	private Failures fetchFailed(ExtensionContext extensionContext) {
 		Store store = extensionContext.getRoot().getStore(NAMESPACE);
 		String basePath = basePath(extensionContext);
-		return store.getOrComputeIfAbsent(basePath, g -> new Failures(basePath, interaction()), Failures.class);
+		return store.getOrComputeIfAbsent(basePath, g -> new Failures(basePath, interaction), Failures.class);
 	}
 
-	private Interaction interaction() {
-		if (GraphicsEnvironment.isHeadless()) {
-			return null;
-		}
-		return new AcceptRejectDialog();
-	}
 
 	private TestLocation pathOf(ExtensionContext extensionContext) {
 		String basePath = basePath(extensionContext);

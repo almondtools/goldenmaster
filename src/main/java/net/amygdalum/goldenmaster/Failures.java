@@ -27,6 +27,10 @@ public class Failures implements CloseableResource {
 		this.interaction = interaction;
 		this.failures = new ArrayList<>();
 	}
+	
+	public List<Failure> getFailures() {
+		return failures;
+	}
 
 	public void add(Failure failure) {
 		failures.add(failure);
