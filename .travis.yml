@@ -1,5 +1,9 @@
 language: java
 
+before_script:
+  - "Xvfb :99 &"
+  - "export DISPLAY=:99"
+
 jdk:
   - openjdk8
 
