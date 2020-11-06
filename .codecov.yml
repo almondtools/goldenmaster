@@ -5,15 +5,15 @@ codecov:
 coverage:
   precision: 2
   round: down
-  range: "90...100"
+  range: "55...100"
 
   status:
     project: yes
       default:
-        target: 90
+        target: 55
     patch: yes
       default:
-        target: 90
+        target: 55
     changes: no
 
 parsers:
