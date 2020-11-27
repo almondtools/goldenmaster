@@ -16,7 +16,7 @@ import org.opentest4j.AssertionFailedError;
 
 public class GoldenMasterExtension implements BeforeEachCallback, TestWatcher, ParameterResolver {
 	private static final Namespace NAMESPACE = Namespace.create(GoldenMasterExtension.class);
-	
+
 	private Interaction interaction;
 
 	public GoldenMasterExtension() {
@@ -61,9 +61,9 @@ public class GoldenMasterExtension implements BeforeEachCallback, TestWatcher, P
 	private Failures fetchFailed(ExtensionContext extensionContext) {
 		Store store = extensionContext.getRoot().getStore(NAMESPACE);
 		String basePath = basePath(extensionContext);
+		Interaction interaction = interaction(extensionContext);
 		return store.getOrComputeIfAbsent(basePath, g -> new Failures(basePath, interaction), Failures.class);
 	}
-
 
 	private TestLocation pathOf(ExtensionContext extensionContext) {
 		String basePath = basePath(extensionContext);
@@ -72,18 +72,31 @@ public class GoldenMasterExtension implements BeforeEachCallback, TestWatcher, P
 		return new TestLocation(basePath, testGroup, testFile);
 	}
 
-	private String basePath(ExtensionContext extensionContext) {
+	private Optional<GoldenMasterTest> annotation(ExtensionContext extensionContext) {
 		Optional<ExtensionContext> context = Optional.of(extensionContext);
 		while (context.isPresent()) {
 			Optional<GoldenMasterTest> goldenMasterTest = context
 				.flatMap(ExtensionContext::getElement)
 				.flatMap(annotatedElement -> AnnotationSupport.findAnnotation(annotatedElement, GoldenMasterTest.class));
 			if (goldenMasterTest.isPresent()) {
-				return goldenMasterTest.get().store();
+				return goldenMasterTest;
 			}
 			context = context.flatMap(ExtensionContext::getParent);
 		}
-		throw new RuntimeException("cannot find annotation GoldenMasterTest");
+		return Optional.empty();
+	}
+
+	private Interaction interaction(ExtensionContext extensionContext) {
+		return annotation(extensionContext)
+			.filter(test -> test.interactive())
+			.map(test -> interaction)
+			.orElse(null);
+	}
+
+	private String basePath(ExtensionContext extensionContext) {
+		return annotation(extensionContext)
+			.map(test -> test.store())
+			.orElseThrow(() -> new RuntimeException("cannot find annotation GoldenMasterTest"));
 	}
 
 	private String groupOf(ExtensionContext extensionContext) {

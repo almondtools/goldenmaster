@@ -37,7 +37,7 @@ public class Failures implements CloseableResource {
 	}
 
 	@Override
-	public void close() throws Throwable {
+	public void close() throws Exception {
 		if (interaction == null) {
 			failures.forEach(this::reject);
 			return;

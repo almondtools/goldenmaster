@@ -14,4 +14,5 @@ import org.junit.jupiter.api.extension.ExtendWith;
 public @interface GoldenMasterTest {
 
 	String store() default "";
+	boolean interactive() default true;
 }
