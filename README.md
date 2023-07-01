@@ -1,8 +1,7 @@
 GoldenMaster
 =============
-[![Build Status](https://api.travis-ci.org/almondtools/goldenmaster.svg)](https://travis-ci.org/almondtools/goldenmaster)
 [![codecov](https://codecov.io/gh/almondtools/goldenmaster/branch/master/graph/badge.svg)](https://codecov.io/gh/almondtools/goldenmaster)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c5cf275a6ff9468f95b22b8998b52e1d)](https://www.codacy.com/project/almondtools/goldenmaster/dashboard?utm_source=github.com&utm_medium=referral&utm_content=almondtools/goldenmaster&utm_campaign=Badge_Grade_Dashboard)
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/bc60e8354d274f3793f53c803fb6b501)](https://app.codacy.com/gh/almondtools/goldenmaster/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
 
 An extension to manage golden master tests in JUnit 5. Heavily inspired by from [golden-master](https://github.com/maxbechtold/golden-master).
 
