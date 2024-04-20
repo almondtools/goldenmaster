@@ -16,8 +16,8 @@ import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.api.extension.ExtensionContext.Namespace;
 import org.junit.jupiter.api.extension.ExtensionContext.Store;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.engine.execution.ExtensionValuesStore;
 import org.junit.jupiter.engine.execution.NamespaceAwareStore;
+import org.junit.platform.engine.support.store.NamespacedHierarchicalStore;
 import org.mockito.Mockito;
 import org.opentest4j.AssertionFailedError;
 
@@ -37,7 +37,7 @@ public class GoldenMasterExtensionTest {
 		void withNoInteractionSpecified() throws Exception {
 			GoldenMasterExtension goldenMasterExtension = new GoldenMasterExtension(null);
 			Namespace ns = Namespace.create(GoldenMasterExtension.class);
-			Store store = new NamespaceAwareStore(new ExtensionValuesStore(null), ns);
+            Store store = new NamespaceAwareStore(new NamespacedHierarchicalStore(null), ns);
 
 			ExtensionContext context = mock(ExtensionContext.class, RETURNS_DEEP_STUBS);
 			when(context.getRoot().getStore(ns)).thenReturn(store);
@@ -62,7 +62,7 @@ public class GoldenMasterExtensionTest {
 			Interaction interaction = mock(Interaction.class);
 			GoldenMasterExtension goldenMasterExtension = new GoldenMasterExtension(interaction);
 			Namespace ns = Namespace.create(GoldenMasterExtension.class);
-			Store store = new NamespaceAwareStore(new ExtensionValuesStore(null), ns);
+			Store store = new NamespaceAwareStore(new NamespacedHierarchicalStore(null), ns);
 
 			ExtensionContext context = mock(ExtensionContext.class, RETURNS_DEEP_STUBS);
 			when(context.getRoot().getStore(ns)).thenReturn(store);
@@ -88,7 +88,7 @@ public class GoldenMasterExtensionTest {
 			Interaction interaction = mock(Interaction.class);
 			GoldenMasterExtension goldenMasterExtension = new GoldenMasterExtension(interaction);
 			Namespace ns = Namespace.create(GoldenMasterExtension.class);
-			Store store = new NamespaceAwareStore(new ExtensionValuesStore(null), ns);
+			Store store = new NamespaceAwareStore(new NamespacedHierarchicalStore(null), ns);
 
 			ExtensionContext context = mock(ExtensionContext.class, RETURNS_DEEP_STUBS);
 			when(context.getRoot().getStore(ns)).thenReturn(store);
