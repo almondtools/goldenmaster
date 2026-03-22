@@ -11,9 +11,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.extension.ExtensionContext.Store.CloseableResource;
-
-public class Failures implements CloseableResource {
+public class Failures implements AutoCloseable {
 	private String basePath;
 	private List<Failure> failures;
 	private Interaction interaction;

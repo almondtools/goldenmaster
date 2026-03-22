@@ -36,10 +36,10 @@ public class GoldenMasterExtensionTest {
 		@Test
 		void withNoInteractionSpecified() throws Exception {
 			GoldenMasterExtension goldenMasterExtension = new GoldenMasterExtension(null);
-			Namespace ns = Namespace.create(GoldenMasterExtension.class);
-            Store store = new NamespaceAwareStore(new NamespacedHierarchicalStore(null), ns);
+            Store store = new NamespaceAwareStore(new NamespacedHierarchicalStore(null), org.junit.platform.engine.support.store.Namespace.create(GoldenMasterExtension.class));
 
 			ExtensionContext context = mock(ExtensionContext.class, RETURNS_DEEP_STUBS);
+            Namespace ns = Namespace.create(GoldenMasterExtension.class);
 			when(context.getRoot().getStore(ns)).thenReturn(store);
 			when(context.getElement()).thenReturn(Optional.of(ExampleClassTest.class));
 			when(context.getRequiredTestClass()).thenReturn((Class) ExampleClassTest.class);
@@ -61,10 +61,10 @@ public class GoldenMasterExtensionTest {
 		void withInteractionSpecified() throws Exception {
 			Interaction interaction = mock(Interaction.class);
 			GoldenMasterExtension goldenMasterExtension = new GoldenMasterExtension(interaction);
-			Namespace ns = Namespace.create(GoldenMasterExtension.class);
-			Store store = new NamespaceAwareStore(new NamespacedHierarchicalStore(null), ns);
+            Store store = new NamespaceAwareStore(new NamespacedHierarchicalStore(null), org.junit.platform.engine.support.store.Namespace.create(GoldenMasterExtension.class));
 
 			ExtensionContext context = mock(ExtensionContext.class, RETURNS_DEEP_STUBS);
+            Namespace ns = Namespace.create(GoldenMasterExtension.class);
 			when(context.getRoot().getStore(ns)).thenReturn(store);
 			when(context.getElement()).thenReturn(Optional.of(ExampleClassTest.class));
 			when(context.getRequiredTestClass()).thenReturn((Class) ExampleClassTest.class);
@@ -87,10 +87,10 @@ public class GoldenMasterExtensionTest {
 		void withConfiguredNoInteraction() throws Exception {
 			Interaction interaction = mock(Interaction.class);
 			GoldenMasterExtension goldenMasterExtension = new GoldenMasterExtension(interaction);
-			Namespace ns = Namespace.create(GoldenMasterExtension.class);
-			Store store = new NamespaceAwareStore(new NamespacedHierarchicalStore(null), ns);
+            Store store = new NamespaceAwareStore(new NamespacedHierarchicalStore(null), org.junit.platform.engine.support.store.Namespace.create(GoldenMasterExtension.class));
 
 			ExtensionContext context = mock(ExtensionContext.class, RETURNS_DEEP_STUBS);
+            Namespace ns = Namespace.create(GoldenMasterExtension.class);
 			when(context.getRoot().getStore(ns)).thenReturn(store);
 			when(context.getElement()).thenReturn(Optional.of(ExampleNonInteractiveTest.class));
 			when(context.getRequiredTestClass()).thenReturn((Class) ExampleNonInteractiveTest.class);
